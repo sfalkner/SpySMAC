@@ -1,0 +1,9 @@
+rnd-freq [0,1][0]
+var-decay [0.001,1][0.95]l
+cla-decay [0.001,1][0.999]l
+rinc [1.00001 ,1024][2]l
+gc-frac [0,1][0.2]  
+rfirst [1,10000000][100]il
+ccmin-mode {0,1,2}[2]
+phase-saving {0,1,2}[2]
+

@@ -1,0 +1,75 @@
+* {
+	margin:0;
+	padding:0;
+}
+
+body {
+	background:#FFFAF0;
+	font-size:13px;
+	font-family:Arial, Helvetica, sans-serif;
+	color:#444;
+	text-shadow:0 1px 0 #fff;
+}
+#wrapper {
+	margin: auto;
+	position: relative;
+	width:800px;
+}
+#container {	
+	position:absolute;
+	top:50px;
+	width:800px;
+height: auto;
+	background:#fff;
+	padding:25px 25px 45px 25px;
+	border:1px solid #11424e;
+	box-shadow:0 1px 2px rgba(0,0,0,1);
+	border-radius:5px;
+	background-image: url("../img/logo.png");
+	background-repeat: no-repeat;
+	background-position: 97% 10px; 
+	background-size: 100px 60px;
+}
+
+dt {
+	font-weight:bold;
+	float:left;
+	width:780px;
+	padding:10px 10px 9px 10px;
+	margin-top:15px;
+	margin-bottom:-4px;
+	border-top:1px solid white;
+	border-left:1px solid white;
+	border-right:1px solid white;
+	cursor:pointer;
+	box-shadow:0 2px 2px rgba(0,0,0,1);
+	border-radius:5px;
+}
+
+dt:hover {
+	color:black;
+}
+
+dd {
+	display:none;
+	margin:0 0 15px 0;
+	float:left;
+	width:780px;
+	padding:10px 10px 15px 10px;
+	border-left:1px solid white;
+	border-right:1px solid white;
+
+}
+
+#button {
+	float:right;
+	display:block;
+	height:18px;
+	width:17px;
+	text-indent:-9999px;
+}
+
+.closed { background:url(../img/button.png) left no-repeat; }
+
+.open { background:url(../img/button.png) right no-repeat; }
+

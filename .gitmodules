@@ -1,0 +1,6 @@
+[submodule "pysmac"]
+	path = pysmac
+	url = https://github.com/sfalkner/pysmac
+[submodule "fanova"]
+	path = fanova
+	url = https://github.com/automl/fanova.git

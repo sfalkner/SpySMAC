@@ -1,0 +1,1 @@
+python SpySMAC_run.py -i ./examples//swv-inst/SWV-GZIP/ -b examples/minisat/core/minisat -p examples/minisat/pcs.txt --prefix "-" -o . -B 10 -c 2 -s 1 -r 2 -n 2
