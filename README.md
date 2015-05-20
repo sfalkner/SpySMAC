@@ -22,7 +22,7 @@ SpySMAC is an algorithm configuration tool based on SMAC for SAT solvers
   As the computations are potentially executed on a cluster, SpySMAC is not installed via pip.
   Just clone the repository including all the submodules via
   ```bash
-  $ git clone https://github.com/sfalkner/SpySMAC.git
+  $ git clone https://github.com/sfalkner/SpySMAC.git && cd SpySMAC/
   $ git submodule init
   $ git submodule update --checkout --recursive
   ```
