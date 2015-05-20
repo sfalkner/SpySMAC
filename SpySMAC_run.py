@@ -315,6 +315,7 @@ def run_simulations(args):
     # adjust some advanced SMAC options here
     smac.smac_options['wallclock-limit'] = options['budget']
     smac.smac_options['run-obj'] = 'RUNTIME'
+    smac.smac_options['overall_obj']='MEAN10'
     if options['seed'] == 0:
         smac.smac_options['scenario_fn'] = 'default_validation_scenario.dat'
 
