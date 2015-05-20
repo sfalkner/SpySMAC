@@ -107,7 +107,7 @@ Here is a break down of the arguments:
   To compare against the default configuration of MiniSAT, we have also to evaluate the default configuration, which is done by running SpySMAC with seed 0:
 
 ```bash
-python SpySMAC_run.py -i ./swv-inst/SWV-GZIP/ -b minisat/core/minisat -p minisat/pcs.txt --prefix "-" -o ./spysmac_logs/ -c 2 --seed 0
+python SpySMAC_run.py -i ./examples/swv-inst/SWV-GZIP/ -b ./examples/minisat/core/minisat -p ./examples/minisat/pcs.txt --prefix "-" -o ./spysmac_logs/ -c 2 --seed 0
 ```
   
   
