@@ -25,7 +25,7 @@ import platform
 
 #adjust the PYTHON_PATH to find the submodules
 spysmac_path = os.path.dirname(os.path.realpath(__file__))
-sys.path =[ os.path.join(spysmac_path, "pysmac/"),
+sys.path =[ os.path.join(spysmac_path, "pysmac"),
             os.path.join(spysmac_path, "cpuinfo")] + sys.path
 
 import pysmac

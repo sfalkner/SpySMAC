@@ -4,3 +4,6 @@
 [submodule "fanova"]
 	path = fanova
 	url = https://github.com/automl/fanova.git
+[submodule "cpuinfo"]
+	path = cpuinfo
+	url = https://github.com/workhorsy/py-cpuinfo
