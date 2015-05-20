@@ -19,13 +19,15 @@ import os
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import traceback
 
-sys.path =["./pysmac/", "./fanova/"] + sys.path
 
-print(sys.path)
+#adjust the PYTHON_PATH to find the submodules
+spysmac_path = os.path.dirname(os.path.realpath(__file__))
+sys.path =[ os.path.join(spysmac_path, "pysmac"),
+            os.path.join(spysmac_path, "fanova")] + sys.path
+
 
 import numpy as np
 import matplotlib
-#matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.gridspec
 
@@ -42,9 +44,9 @@ from SpySMAC.utils.config_space import ConfigSpace
 logging.basicConfig(level=logging.DEBUG)
 
 
-__version__ = 0.1
+__version__ = 0.2
 __date__ = '2015-03-18'
-__updated__ = '2015-05-11'
+__updated__ = '2015-05-20'
 
 
 def file_len(fname):

@@ -23,18 +23,19 @@ import subprocess
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 import platform
 
-
-sys.path =["./pysmac/", "/cpuinfo/"] + sys.path
-
+#adjust the PYTHON_PATH to find the submodules
+spysmac_path = os.path.dirname(os.path.realpath(__file__))
+sys.path =[ os.path.join(spysmac_path, "pysmac/"),
+            os.path.join(spysmac_path, "cpuinfo")] + sys.path
 
 import pysmac
 import pysmac.utils
 
 from cpuinfo.cpuinfo import get_cpu_info
 
-__version__ = 0.1
+__version__ = 0.2
 __date__ = '2015-03-18'
-__updated__ = '2015-03-19'
+__updated__ = '2015-05-20'
 
 # for DEBUG purposes?
 random.seed(12345)
