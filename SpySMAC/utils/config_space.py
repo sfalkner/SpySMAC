@@ -52,7 +52,7 @@ class Parameter(object):
         if self.type == ParameterType.categorical and self.default not in self.values:
             logging.error("Default (%s) of %s is not in values (%s)" %(default, name, ",".join(values)))
         elif self.type in [ParameterType.float, ParameterType.integer] and (self.default > self.values[1] or self.default < self.values[0]):
-            logging.error("Default (%f) of %s is not in [%s]" %(default, name, ",".values(map(str,values)) ))    
+            logging.error("Default (%f) of %s is not in [%s]" %(default, name, ",".values(list(map(str,values))) ))    
         
         if self.type == ParameterType.categorical:
             self._converted_def = self.values.index(self.default)
@@ -135,7 +135,7 @@ class ConfigSpace(object):
         
         #: encoding of conditionals: at index i, conditional for parameter with index, conditional tuple of (head, values)
         self._map_conds = []
-        for _ in xrange(self._n_params):
+        for _ in range(self._n_params):
             self._map_conds.append([])
         self._get_map_conditionals()
         logging.debug(self._map_conds)
@@ -174,7 +174,7 @@ class ConfigSpace(object):
                     logging.debug("CAT MATCH")
                     name = cat_match.group("name")
                     type_ = ParameterType.categorical
-                    values = map(lambda x: x.strip(" "), cat_match.group("values").split(","))
+                    values = [x.strip(" ") for x in cat_match.group("values").split(",")]
                     default = cat_match.group("default")
                     
                     #logging.debug("CATEGORIAL: %s %s {%s} (%s)" %(name, default, ",".join(map(str, values)), type_))  
@@ -208,7 +208,7 @@ class ConfigSpace(object):
                 if cond_match:
                     head = cond_match.group("head")
                     cond = cond_match.group("cond")
-                    values = map(lambda x : x.strip(" "), cond_match.group("values").split(","))
+                    values = [x.strip(" ") for x in cond_match.group("values").split(",")]
                     
                     #logging.debug("CONDITIONAL: %s | %s in {%s}" %(cond, head, ",".join(values)))
                     
@@ -224,8 +224,8 @@ class ConfigSpace(object):
                 forbidden_match = FORBIDDEN_REGEX.match(line)
                 if forbidden_match:
                     values = forbidden_match.group("values")
-                    values = map(lambda x: x.strip(" "), values.split(","))
-                    values = map(lambda x: x.split("="), values)
+                    values = [x.strip(" ") for x in values.split(",")]
+                    values = [x.split("=") for x in values]
                     
                     #logging.debug("FORBIDDEN: {%s}" %(values))
                     
@@ -267,7 +267,7 @@ class ConfigSpace(object):
             
             :return: dictionary with name -> value
         '''
-        param_dict = dict((p.name,p.default) for p in self.parameters.itervalues())
+        param_dict = dict((p.name,p.default) for p in self.parameters.values())
         
         #remove non-active parameters
         for param in self.__ordered_params:
@@ -294,7 +294,7 @@ class ConfigSpace(object):
         while rejected: # rejection sampling
             vec = numpy.zeros(self._n_params)
             is_active = []
-            for indx in xrange(self._n_params):
+            for indx in range(self._n_params):
                 active = True
                 if self._map_conds[indx]: 
                     for cond in self._map_conds[indx]:
@@ -457,7 +457,7 @@ class ConfigSpace(object):
         '''
         
         is_active = []
-        for indx in xrange(self._n_params):
+        for indx in range(self._n_params):
             active = not numpy.isnan(param_vec[indx])
             if active and self._map_conds[indx]: 
                 for cond in self._map_conds[indx]:
@@ -487,7 +487,7 @@ class ConfigSpace(object):
         '''
         new_vec = numpy.copy(vec)
         if value == "def":
-            for indx in xrange(self._n_params):
+            for indx in range(self._n_params):
                 if numpy.isnan(vec[indx]):
                     param_name = self.__ordered_params[indx]
                     param = self.parameters[param_name]
@@ -495,7 +495,7 @@ class ConfigSpace(object):
                 else:  
                     new_vec[indx] = vec[indx]
         elif value == "mean":
-            for indx in xrange(self._n_params):
+            for indx in range(self._n_params):
                 if numpy.isnan(vec[indx]):
                     is_cat = self._is_cat_list[indx]
                     if is_cat:

@@ -59,7 +59,7 @@ def run_and_get_stdout(command, pipe_command=None):
 
 def program_paths(program_name):
 	paths = []
-	exts = filter(None, os.environ.get('PATHEXT', '').split(os.pathsep))
+	exts = [_f for _f in os.environ.get('PATHEXT', '').split(os.pathsep) if _f]
 	path = os.environ['PATH']
 	for p in os.environ['PATH'].split(os.pathsep):
 		p = os.path.join(p, program_name)
@@ -475,7 +475,7 @@ class CPUID(object):
 		}
 
 		# Get a list of only the flags that are true
-		flags = [k for k, v in flags.items() if v]
+		flags = [k for k, v in list(flags.items()) if v]
 
 		# Get the Extended CPU flags
 		extended_flags = {}
@@ -566,7 +566,7 @@ class CPUID(object):
 			}
 
 		# Get a list of only the flags that are true
-		extended_flags = [k for k, v in extended_flags.items() if v]
+		extended_flags = [k for k, v in list(extended_flags.items()) if v]
 		flags += extended_flags
 
 		flags.sort()
@@ -1011,7 +1011,7 @@ def get_cpu_info_from_registry():
 		return None
 
 	try:
-		import _winreg as winreg
+		import winreg as winreg
 	except ImportError as err:
 		import winreg
 
@@ -1089,7 +1089,7 @@ def get_cpu_info_from_registry():
 	}
 
 	# Get a list of only the flags that are true
-	flags = [k for k, v in flags.items() if v]
+	flags = [k for k, v in list(flags.items()) if v]
 	flags.sort()
 
 	return {
@@ -1222,29 +1222,29 @@ def get_cpu_info():
 def main():
 	info = get_cpu_info()
 
-	print('Vendor ID: {0}'.format(info['vendor_id']))
-	print('Brand: {0}'.format(info['brand']))
-	print('Hz Advertised: {0}'.format(info['hz_advertised']))
-	print('Hz Actual: {0}'.format(info['hz_actual']))
-	print('Hz Advertised Raw: {0}'.format(info['hz_advertised_raw']))
-	print('Hz Actual Raw: {0}'.format(info['hz_actual_raw']))
-	print('Arch: {0}'.format(info['arch']))
-	print('Bits: {0}'.format(info['bits']))
-	print('Count: {0}'.format(info['count']))
+	print(('Vendor ID: {0}'.format(info['vendor_id'])))
+	print(('Brand: {0}'.format(info['brand'])))
+	print(('Hz Advertised: {0}'.format(info['hz_advertised'])))
+	print(('Hz Actual: {0}'.format(info['hz_actual'])))
+	print(('Hz Advertised Raw: {0}'.format(info['hz_advertised_raw'])))
+	print(('Hz Actual Raw: {0}'.format(info['hz_actual_raw'])))
+	print(('Arch: {0}'.format(info['arch'])))
+	print(('Bits: {0}'.format(info['bits'])))
+	print(('Count: {0}'.format(info['count'])))
 
-	print('Raw Arch String: {0}'.format(info['raw_arch_string']))
+	print(('Raw Arch String: {0}'.format(info['raw_arch_string'])))
 
-	print('L2 Cache Size: {0}'.format(info['l2_cache_size']))
-	print('L2 Cache Line Size: {0}'.format(info['l2_cache_line_size']))
-	print('L2 Cache Associativity: {0}'.format(info['l2_cache_associativity']))
+	print(('L2 Cache Size: {0}'.format(info['l2_cache_size'])))
+	print(('L2 Cache Line Size: {0}'.format(info['l2_cache_line_size'])))
+	print(('L2 Cache Associativity: {0}'.format(info['l2_cache_associativity'])))
 
-	print('Stepping: {0}'.format(info['stepping']))
-	print('Model: {0}'.format(info['model']))
-	print('Family: {0}'.format(info['family']))
-	print('Processor Type: {0}'.format(info['processor_type']))
-	print('Extended Model: {0}'.format(info['extended_model']))
-	print('Extended Family: {0}'.format(info['extended_family']))
-	print('Flags: {0}'.format(', '.join(info['flags'])))
+	print(('Stepping: {0}'.format(info['stepping'])))
+	print(('Model: {0}'.format(info['model'])))
+	print(('Family: {0}'.format(info['family'])))
+	print(('Processor Type: {0}'.format(info['processor_type'])))
+	print(('Extended Model: {0}'.format(info['extended_model'])))
+	print(('Extended Family: {0}'.format(info['extended_family'])))
+	print(('Flags: {0}'.format(', '.join(info['flags']))))
 
 if __name__ == '__main__':
     main()

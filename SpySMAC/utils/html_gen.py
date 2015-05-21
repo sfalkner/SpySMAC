@@ -73,7 +73,7 @@ $(document).ready(function(){
         fp.write("<dt>Final Configuration <a href=\"#\" id=\"button\" class=\"closed\">Details</a></dt>\n")
         fp.write("<dd>\n")
         print(incumbent)
-        fp.write("%s" %(" ".join("%s=%s" %(key, value) for key, value in incumbent.items())))
+        fp.write("%s" %(" ".join("%s=%s" %(key, value) for key, value in list(incumbent.items()))))
         fp.write("</dd>\n")        
         
         #write meta data
