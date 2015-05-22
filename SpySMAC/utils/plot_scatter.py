@@ -71,7 +71,7 @@ def plot_scatter_plot(x_data, y_data, labels, title="", save="", debug=False,
 
     if linefactors is not None:
         for f in linefactors:
-            c = ref_colors.next()
+            c = next(ref_colors)
             # Lower reference lines
             ax1.plot([f*out_lo, out_up], [out_lo, (1.0/f)*out_up], c=c,
                      linestyle=st_ref, linewidth=size*1.5)

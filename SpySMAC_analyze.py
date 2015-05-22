@@ -11,7 +11,7 @@ pySMAC4SAT -- configuration for SAT
 
 @contact:   {sfalkner,lindauer}@cs.uni-freiburg.de
 '''
-from __future__ import print_function, division
+
 
 import sys
 import logging
@@ -133,8 +133,8 @@ def analyze_simulations(args):
     num_test_instances = file_len(os.path.join(options['inputdir'], 'test_instances.dat')) - \
                             num_train_instances
     
-    train_indices = range(num_train_instances+num_test_instances,2*num_train_instances+num_test_instances)
-    test_indices  =  range(num_train_instances, num_train_instances+num_test_instances)
+    train_indices = list(range(num_train_instances+num_test_instances,2*num_train_instances+num_test_instances))
+    test_indices  =  list(range(num_train_instances, num_train_instances+num_test_instances))
  
     
     
@@ -159,7 +159,7 @@ def analyze_simulations(args):
     test_performances  = []
     
     # get performance for each run
-    for i in obj.data.keys():
+    for i in list(obj.data.keys()):
         tmp = obj.data[i]['test_performances']
         tmp_train = np.array([tmp[j] for j in train_indices]).flatten()
         tmp_test  = np.array([tmp[j] for j in test_indices]).flatten()
@@ -261,14 +261,14 @@ def get_stats(baseline, configured, cutoff=300):
          generates a dictionary with par1", "par10", "tos" for "base" and "conf"
     '''
     stats = {"base": {
-                      "par1": sum(map(lambda x: cutoff if x >= cutoff else x, baseline)) / len(baseline),
-                      "par10": sum(map(lambda x: 10*cutoff if x >= cutoff else x, baseline)) / len(baseline),
-                      "tos": sum(map(lambda x: 1 if x >= cutoff else 0, baseline)),
+                      "par1": sum([cutoff if x >= cutoff else x for x in baseline]) / len(baseline),
+                      "par10": sum([10*cutoff if x >= cutoff else x for x in baseline]) / len(baseline),
+                      "tos": sum([1 if x >= cutoff else 0 for x in baseline]),
                       },
              "conf": {
-                      "par1": sum(map(lambda x: cutoff if x >= cutoff else x, configured)) / len(configured),
-                      "par10": sum(map(lambda x: 10*cutoff if x >= cutoff else x, configured)) / len(configured),
-                      "tos": sum(map(lambda x: 1 if x >= cutoff else 0, configured)),
+                      "par1": sum([cutoff if x >= cutoff else x for x in configured]) / len(configured),
+                      "par10": sum([10*cutoff if x >= cutoff else x for x in configured]) / len(configured),
+                      "tos": sum([1 if x >= cutoff else 0 for x in configured]),
                       },
              "n" :  len(configured)
              }
@@ -310,8 +310,8 @@ def get_cactus_plot(baseline, configured, out_dir, cutoff, test=True):
     ax1 = plt.subplot(gs[0:1, :])
     
     #remove timeouts
-    baseline = filter(lambda x: True if x < cutoff else False, baseline)
-    configured = filter(lambda x: True if x < cutoff else False, configured)
+    baseline = list(filter(lambda x: True if x < cutoff else False, baseline))
+    configured = list(filter (lambda x: True if x < cutoff else False, configured))
     
     ax1.plot(np.sort(baseline), marker="x", label="Default")
     ax1.plot(np.sort(configured),color='r', marker="x", label="Configured")

@@ -273,7 +273,7 @@ def run_simulations(args):
 
     param_dict, conditions, forbiddens = pysmac.utils.read_pcs(options['pcs'])
 
-    logging.debug("Params: %s" % (str(param_dict.keys())))
+    logging.debug("Params: %s" % (str(list(param_dict.keys()))))
     logging.debug("Params: %s" % (str(param_dict)))
 
     parameter_string_template = ("%s" % options['prefix']) +\
@@ -300,7 +300,7 @@ def run_simulations(args):
             fh.write("cpu count = {}\n".format(info['count']))
             
             # spysmacs run options
-            for (k,v) in options.items():
+            for (k,v) in list(options.items()):
                 fh.write("{} = {}\n".format(k,v))
         
         # make sure no time is wasted and go directly to the validation
