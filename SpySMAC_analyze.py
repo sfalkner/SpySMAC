@@ -213,12 +213,21 @@ def analyze_simulations(args):
         cs = ConfigSpace(obj.pcs_fn)
 
         # fANOVA        
-        p_not_imps, fanova_not_plots = get_fanova(obj.get_pyfanova_obj(check_scenario_files = False, improvement_over="NOTHING"), 
+        try:
+            p_not_imps, fanova_not_plots = get_fanova(obj.get_pyfanova_obj(check_scenario_files = False, improvement_over="NOTHING"), 
                                       cs, options['outputdir'], improvement_over="NOTHING")
+        except:
+            traceback.print_exc()
+            logging.warn("fANOVA (without capping) failed")
+            p_not_imps, fanova_not_plots = [],[]
     
-        p_def_imps, fanova_def_plots = get_fanova(obj.get_pyfanova_obj(check_scenario_files = False, improvement_over="DEFAULT"), 
+        try:
+            p_def_imps, fanova_def_plots = get_fanova(obj.get_pyfanova_obj(check_scenario_files = False, improvement_over="DEFAULT"), 
                                       cs, options['outputdir'], improvement_over="DEFAULT")
-    
+        except:
+            traceback.print_exc()
+            logging.warn("fANOVA (with capping at default performance) failed")
+            p_def_imps, fanova_def_plots = [],[]
     
     plots = {"scatter": {"test" : test_scatter_plot, "train" : train_scatter_plot}, 
              "cactus": {"test" : test_cactus_plot, "train" : train_cactus_plot},

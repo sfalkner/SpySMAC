@@ -172,19 +172,27 @@ def __write_fanova(fp, parameter_importance, plots, impr_over):
     # Parameter Importance Plot
     fp.write("<dt>Parameter Importance over %s <a href=\"#\" id=\"button\" class=\"closed\">Details</a></dt>\n" %(impr_over))
     fp.write("<dd>\n")
-    fp.write("<div class=\"Table\">\n")
-    fp.write("<table>\n")
-    fp.write("<tr><th>Parameter</th><th>Importance</th></tr>\n")
-    for marginal, parameter in parameter_importance:
-        fp.write("<tr><th>%s</th><th>%.2f</th></tr>\n" %(parameter, marginal))
-    fp.write("</table>\n")
-    fp.write("</div>\n")
+    if not parameter_importance:
+        fp.write("fANOVA crashed - please see logfiles for further details.")
+    else:
+        fp.write("<div class=\"Table\">\n")
+        fp.write("<table>\n")
+        fp.write("<tr><th>Parameter</th><th>Importance</th></tr>\n")
+        for marginal, parameter in parameter_importance:
+            fp.write("<tr><th>%s</th><th>%.2f</th></tr>\n" %(parameter, marginal))
+        fp.write("</table>\n")
+        fp.write("</div>\n")
     fp.write("</dd>\n")
     
     fp.write("<dt>Parameter Importance over %s Plots <a href=\"#\" id=\"button\" class=\"closed\">Details</a></dt>\n" %(impr_over))
-    fp.write("<dd><div align=\"center\">\n")
-    for fplot in plots:
-        fp.write("<a href=\"%s\" data-lightbox=\"%s\" data-title=\"%s\"><img src=\"%s\" alt=\"Fanova Plot\" width=\"300px\"></a>\n"  %(fplot,fplot,fplot,fplot))
-    fp.write("</div></dd>\n")
+    fp.write("<dd>")
+    if not parameter_importance:
+        fp.write("fANOVA crashed - please see logfiles for further details.")
+    else:
+        fp.write("<div align=\"center\">\n")
+        for fplot in plots:
+            fp.write("<a href=\"%s\" data-lightbox=\"%s\" data-title=\"%s\"><img src=\"%s\" alt=\"Fanova Plot\" width=\"300px\"></a>\n"  %(fplot,fplot,fplot,fplot))
+        fp.write("</div>")
+    fp.write("</dd>\n")
         
     
