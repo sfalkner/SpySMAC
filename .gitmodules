@@ -7,3 +7,6 @@
 [submodule "cpuinfo"]
 	path = cpuinfo
 	url = https://github.com/workhorsy/py-cpuinfo
+[submodule "pynisher"]
+	path = pynisher
+	url = https://github.com/sfalkner/pynisher/
