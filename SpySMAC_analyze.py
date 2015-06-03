@@ -23,6 +23,7 @@ import traceback
 #adjust the PYTHON_PATH to find the submodules
 spysmac_path = os.path.dirname(os.path.realpath(__file__))
 sys.path =[ os.path.join(spysmac_path, "pysmac"),
+            os.path.join(spysmac_path, "pynisher"),
             os.path.join(spysmac_path, "fanova")] + sys.path
 
 
