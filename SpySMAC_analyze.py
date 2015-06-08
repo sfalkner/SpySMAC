@@ -365,11 +365,14 @@ def get_cdf_plot(baseline, configured, out_dir, cutoff, test=True):
         for i, x in enumerate(np.sort(data)):
             b_x.append(x)
             if x < cutoff:
-                b_y.append(i /len(data))
+                b_y.append(float(i) /len(data))
                 i_s = i
             else: 
-                b_y.append(i_s /len(data))
+                b_y.append(float(i_s) /len(data))
         return b_x, b_y
+                
+    print(get_x_y(baseline))
+    print(get_x_y(configured))
                 
     #print(get_x_y(baseline)[1])
     #print(get_x_y(baseline)[0])
