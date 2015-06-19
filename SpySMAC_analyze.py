@@ -255,6 +255,25 @@ def analyze_simulations(args):
                   param_imp_not=p_not_imps, 
                   plots=plots, 
                   out_dir=options['outputdir'])
+                 
+    try:
+        import SpySMAC.utils.pdf_generator
+    
+        SpySMAC.utils.pdf_generator.generate_pdf(
+            solver_name=solver_name, 
+            meta=meta, 
+            incumbent=obj.data[i]['parameters'][0],
+            test_perf=test_stats,
+            training_perf=training_stats, 
+            param_imp_def=p_def_imps,
+            param_imp_not=p_not_imps, 
+            plots=plots, 
+            out_dir=options['outputdir'])
+    except ImportError:
+        print("please install ReportLab if you want SpySMAC to generate also a PDF version of the final report.")
+    except:
+        print("failed generating the pdf")
+        traceback.print_exc(file=sys.stdout)
     
     
 def get_stats(baseline, configured, cutoff=300):
