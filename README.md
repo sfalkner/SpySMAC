@@ -3,7 +3,8 @@ SpySMAC is an algorithm configuration tool based on SMAC for SAT solvers
 
 #LICENSE
   It is distributed under the GNU Public License. See COPYING for
-  details regarding the license. Please note that SMAC (shipped with SpySMAC
+  details regarding the license. Please note that SMAC (shipped with SpySMAC) is released under a different license.
+  For non-commercial and academic use, it is free to use. Please contact Frank Hutter to discuss obtaining a license for commercial purposes.
   
   
 #OVERVIEW
