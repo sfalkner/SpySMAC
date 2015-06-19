@@ -29,6 +29,7 @@ sys.path =[ os.path.join(spysmac_path, "pysmac"),
 
 import numpy as np
 import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.gridspec
 
@@ -42,7 +43,7 @@ from SpySMAC.utils.config_space import ConfigSpace
 
 
 
-logging.basicConfig(level=logging.DEBUG)
+#logging.basicConfig(level=logging.DEBUG)
 
 
 __version__ = 0.2
