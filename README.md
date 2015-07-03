@@ -33,6 +33,8 @@ SpySMAC is an algorithm configuration tool based on SMAC for SAT solvers
 #PACKAGE CONTENTS
   examples     - directory containing a small set of instances and miniSAT
   
+  cmd_building_scripts - directory with example script how to write your own command line builder
+  
   fanova       - powerful parameter importance evaluation package
   
   pysmac       - a package providing the python inteface to SMAC

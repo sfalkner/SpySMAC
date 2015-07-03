@@ -16,6 +16,7 @@ import os
 import sys
 import signal
 import resource
+import imp
 
 import logging
 import random
@@ -51,13 +52,24 @@ def sat_function(instance=None, seed=None,  **kwargs):
     global instance_names
     global cmd
     global parameter_string_template
+    global cmd_builder_script
 
-    cmd = cmd.replace("<instance>", str(instance_names[instance%len(instance_names)]))
-    cmd = cmd.replace("<seed>", str(seed))
-    cmd = cmd.replace('<params>', ' '.join(
-        [parameter_string_template % (k, kwargs[k]) for k in kwargs]))
+    if cmd_builder_script is None:
+        cmd = cmd.replace("<instance>", str(instance_names[instance%len(instance_names)]))
+        cmd = cmd.replace("<seed>", str(seed))
+        cmd = cmd.replace('<params>', ' '.join(
+            [parameter_string_template % (k, kwargs[k]) for k in kwargs]))
+            
+        logging.info("Issuing algorithm run with command\n{}".format(cmd))
+    
+    else: 
+        loaded_script = imp.load_source("cmd_builder", cmd_builder_script)
+        runargs = {   "instance": str(instance_names[instance%len(instance_names)]),
+                      "seed" : seed,
+                      "binary" : cmd.split(" ")[0]
+                   }
+        cmd = loaded_script.get_command_line_cmd(runargs, kwargs)
         
-    logging.info("Issuing algorithm run with command\n{}".format(cmd))
     cmd = cmd.split()
 
     # set up the signal handle to catch all the signals for proper
@@ -205,6 +217,11 @@ USAGE
     opt_params.add_argument("-C", "--callstring", default="<params> <instance>",
                             help="call string of your solver - use the place "
                             "holder: <instance>, <tempdir>, <seed>, <params>")
+    
+    opt_params.add_argument("--cmd_builder_script", default=None,
+                            help="your own Python script with a function "
+                            "get_command_line_cmd(runargs, config) "
+                            "to implement your own cmd call builder")
 
     opt_params.add_argument("-v", "--verbosity", default="INFO",
                             choices=["DEBUG", "INFO", "WARNING", "ERROR"],
@@ -246,9 +263,12 @@ def run_simulations(args):
     global instance_names
     global cmd
     global parameter_string_template
-
+    global cmd_builder_script
+    
     # parse the arguments, find the instances and read the pcs file
     options = parse_args(args)
+
+    cmd_builder_script = options['cmd_builder_script']
 
     logging.info("Setting up simulations in '%s'"%options['outputdir'])
 
