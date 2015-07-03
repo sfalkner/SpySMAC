@@ -335,6 +335,7 @@ def get_cactus_plot(baseline, configured, out_dir, cutoff, test=True):
     plt.savefig(out_file, dpi=100, facecolor='w', edgecolor='w',
                 orientation='portrait', papertype=None, format=None,
                 transparent=False, pad_inches=0.02, bbox_inches='tight')
+    plt.close()
     if test:
         return "cactus_test.png"
     else:
@@ -372,8 +373,8 @@ def get_cdf_plot(baseline, configured, out_dir, cutoff, test=True):
                 b_y.append(float(i_s) /len(data))
         return b_x, b_y
                 
-    print(get_x_y(baseline))
-    print(get_x_y(configured))
+    #print(get_x_y(baseline))
+    #print(get_x_y(configured))
                 
     #print(get_x_y(baseline)[1])
     #print(get_x_y(baseline)[0])
@@ -450,6 +451,7 @@ def get_fanova(pyfanova, cs, out_dir, improvement_over="DEFAULT"):
         f.savefig(out_file, dpi=100, facecolor='w', edgecolor='w',
                 orientation='portrait', papertype=None, format=None,
                 transparent=False, pad_inches=0.02, bbox_inches='tight')
+        f.close()
         plots.append(out_name)
     
     return most_important, plots
