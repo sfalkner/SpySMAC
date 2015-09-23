@@ -1,5 +1,6 @@
 #SpySMAC 
-SpySMAC is an algorithm configuration tool based on SMAC for SAT solvers
+SpySMAC is an algorithm configuration and analysing tool based on SMAC for SAT solvers
+and was developed by the [ML4AAD](http://www.ml4aad.org) group in Freiburg.
 
 #LICENSE
   It is distributed under the GNU AFFERO GENERAL PUBLIC LICENSE. See COPYING for
