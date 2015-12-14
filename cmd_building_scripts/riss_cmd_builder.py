@@ -24,7 +24,7 @@ def get_command_line_cmd(runargs, conf_dict):
     
     '''
     binary_path = runargs["binary"]
-    cmd = "%s -config=CSSC2014 " %(binary_path) 
+    cmd = "%s -config= " %(binary_path) 
     for name, value in conf_dict.items():
             if value == "yes":
                 cmd += " -%s" %(name)
