@@ -107,7 +107,7 @@ USAGE
     opt_params.add_argument("-d", "--disable_fanova", action="store_true", default=False,
                             help="disables fANOVA")
     
-    opt_params.add_argument("-m", "--memlimit_fanova", default=512,
+    opt_params.add_argument("-m", "--memlimit_fanova", default=2024,
                             help="sets memory limit in MB for fANOVA")
 
     # Process arguments
