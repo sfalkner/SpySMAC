@@ -18,7 +18,7 @@ and was developed by the [ML4AAD](http://www.ml4aad.org) group in Freiburg.
 
   * Python 2.7 (or 3.4 soon)
   * [numpy](http://www.numpy.org/) (during the analysis, not for the configuration phase)
-  * [matplotlib](http://matplotlib.org/) (during the analysis, not for the configuration phase)
+  * [matplotlib](http://matplotlib.org/) (at least version 1.4.0; during the analysis, not for the configuration phase)
   * Java 7 (or later)
 
 #INSTALLATION
