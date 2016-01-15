@@ -17,6 +17,7 @@ import sys
 import signal
 import resource
 import imp
+import errno
 
 import logging
 import random
@@ -305,7 +306,14 @@ def run_simulations(args):
 
     # for the special seed 0, 
     if options['seed'] == 0:
-        # store meta information in a file for the report
+
+        # make sure that the output directory exists
+        try:
+            os.makedirs(options['outputdir'])
+        except OSError as exception:
+            if exception.errno != errno.EEXIST:
+                raise
+        # store meta information in a file for the report        
         with open(os.path.join(options['outputdir'], 'spysmac.meta'),'w') as fh:
             
             # os information

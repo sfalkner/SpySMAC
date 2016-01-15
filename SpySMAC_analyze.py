@@ -107,6 +107,8 @@ USAGE
     opt_params.add_argument("-d", "--disable_fanova", action="store_true", default=False,
                             help="disables fANOVA")
     
+    opt_params.add_argument("-m", "--memlimit_fanova", default=2024,
+                            help="sets memory limit in MB for fANOVA")
 
     # Process arguments
     args = parser.parse_args(argv[1:])
@@ -149,8 +151,8 @@ def analyze_simulations(args):
               "Most likely you did not run SpySMAC_run with --seed 0.")
 
     tmp = obj.data[0]['test_performances']
-    baseline_train = np.array([tmp[j] for j in train_indices]).flatten()
-    baseline_test  = np.array([tmp[j] for j in test_indices]).flatten()
+    baseline_train = np.array([list(tmp[j]) for j in train_indices]).flatten()
+    baseline_test  = np.array([list(tmp[j]) for j in test_indices]).flatten()
     
 
     # import the data for the configuration runs
@@ -163,13 +165,12 @@ def analyze_simulations(args):
     # get performance for each run
     for i in list(obj.data.keys()):
         tmp = obj.data[i]['test_performances']
-        tmp_train = np.array([tmp[j] for j in train_indices]).flatten()
-        tmp_test  = np.array([tmp[j] for j in test_indices]).flatten()
         
+        tmp_train = np.array([list(tmp[j]) for j in train_indices]).flatten()
+        tmp_test  = np.array([list(tmp[j]) for j in test_indices]).flatten()
         run_ids.append(i)
         train_performances.append(tmp_train)
         test_performances.append(tmp_test)
-    
     
     # each ROW contains the measured performance for the instances
     train_performances = np.array(train_performances)
@@ -216,7 +217,7 @@ def analyze_simulations(args):
 
         # fANOVA        
         try:
-            p_not_imps, fanova_not_plots = get_fanova(obj.get_pyfanova_obj(check_scenario_files = False, improvement_over="NOTHING"), 
+            p_not_imps, fanova_not_plots = get_fanova(obj.get_pyfanova_obj(check_scenario_files = False, improvement_over="NOTHING", heap_size = options['memlimit_fanova']), 
                                       cs, options['outputdir'], improvement_over="NOTHING")
         except:
             traceback.print_exc()
@@ -224,7 +225,7 @@ def analyze_simulations(args):
             p_not_imps, fanova_not_plots = [],[]
     
         try:
-            p_def_imps, fanova_def_plots = get_fanova(obj.get_pyfanova_obj(check_scenario_files = False, improvement_over="DEFAULT"), 
+            p_def_imps, fanova_def_plots = get_fanova(obj.get_pyfanova_obj(check_scenario_files = False, improvement_over="DEFAULT", heap_size = options['memlimit_fanova']), 
                                       cs, options['outputdir'], improvement_over="DEFAULT")
         except:
             traceback.print_exc()
@@ -406,7 +407,7 @@ def get_cdf_plot(baseline, configured, out_dir, cutoff, test=True):
     #ax1.set_ylim([0,cutoff])
     ax1.set_xscale('log')
 
-    ax1.legend(loc='upper left')
+    ax1.legend(loc='lower right')
 
     if test:
         out_file = os.path.join(out_dir, "cdf_test.png")
