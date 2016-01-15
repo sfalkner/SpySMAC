@@ -170,7 +170,7 @@ def __write_html_stats_table(fp, perf):
 def __write_fanova(fp, parameter_importance, plots, impr_over):
     
     # Parameter Importance Plot
-    fp.write("<dt>Parameter Importance over %s <a href=\"#\" id=\"button\" class=\"closed\">Details</a></dt>\n" %(impr_over))
+    fp.write("<dt>Parameter Importance (capped at %s) <a href=\"#\" id=\"button\" class=\"closed\">Details</a></dt>\n" %(impr_over))
     fp.write("<dd>\n")
     if not parameter_importance:
         fp.write("fANOVA crashed - please see logfiles for further details.")
@@ -184,7 +184,7 @@ def __write_fanova(fp, parameter_importance, plots, impr_over):
         fp.write("</div>\n")
     fp.write("</dd>\n")
     
-    fp.write("<dt>Parameter Importance over %s Plots <a href=\"#\" id=\"button\" class=\"closed\">Details</a></dt>\n" %(impr_over))
+    fp.write("<dt>Parameter Importance Plots (capped at %s) <a href=\"#\" id=\"button\" class=\"closed\">Details</a></dt>\n" %(impr_over))
     fp.write("<dd>")
     if not parameter_importance:
         fp.write("fANOVA crashed - please see logfiles for further details.")
