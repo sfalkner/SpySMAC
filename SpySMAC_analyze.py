@@ -397,8 +397,8 @@ def get_cdf_plot(baseline, configured, out_dir, cutoff, test=True):
                 
     #print(get_x_y(baseline)[1])
     #print(get_x_y(baseline)[0])
-    ax1.plot(get_x_y(baseline)[0], get_x_y(baseline)[1], label="Default")
-    ax1.plot(get_x_y(configured)[0], get_x_y(configured)[1], color='r', label="Configured")
+    ax1.step(get_x_y(baseline)[0], get_x_y(baseline)[1], label="Default")
+    ax1.step(get_x_y(configured)[0], get_x_y(configured)[1], color='r', label="Configured")
 
     ax1.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
     ax1.set_xlabel("Runtime [sec]")
