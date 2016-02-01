@@ -109,6 +109,9 @@ USAGE
     
     opt_params.add_argument("-m", "--memlimit_fanova", default=2024,
                             help="sets memory limit in MB for fANOVA")
+    
+    opt_params.add_argument("-n", "--num_params", default=10,
+                            help="number of most important parameters in fANOVA analysis")
 
     # Process arguments
     args = parser.parse_args(argv[1:])
@@ -218,17 +221,17 @@ def analyze_simulations(args):
         # fANOVA        
         try:
             p_not_imps, fanova_not_plots = get_fanova(obj.get_pyfanova_obj(check_scenario_files = False, improvement_over="NOTHING", heap_size = options['memlimit_fanova']), 
-                                      cs, options['outputdir'], improvement_over="NOTHING")
+                                      cs, options['outputdir'], improvement_over="NOTHING", num_params=options["num_params"])
         except:
-            traceback.print_exc()
+            #traceback.print_exc()
             logging.warn("fANOVA (without capping) failed")
             p_not_imps, fanova_not_plots = [],[]
     
         try:
             p_def_imps, fanova_def_plots = get_fanova(obj.get_pyfanova_obj(check_scenario_files = False, improvement_over="DEFAULT", heap_size = options['memlimit_fanova']), 
-                                      cs, options['outputdir'], improvement_over="DEFAULT")
+                                      cs, options['outputdir'], improvement_over="DEFAULT", num_params=options["num_params"])
         except:
-            traceback.print_exc()
+            #traceback.print_exc()
             logging.warn("fANOVA (with capping at default performance) failed")
             p_def_imps, fanova_def_plots = [],[]
     
@@ -424,18 +427,19 @@ def get_cdf_plot(baseline, configured, out_dir, cutoff, test=True):
     else:
         return "cdf_train.png"     
 
-def get_fanova(pyfanova, cs, out_dir, improvement_over="DEFAULT"):
+def get_fanova(pyfanova, cs, out_dir, improvement_over="DEFAULT", num_params=10):
     ''' generate parameter importance via fANOVA 
         Args:
             pyfanova: pyFanova object
             cs: ConfigSpac object
             out_dir: Output directory
             improvement_over: capping of fANOVA ("DEFAUL" or "NONE")
+            num_params: number of most important parameters to return 
     '''
     
     from pyfanova.visualizer import Visualizer
     
-    most_important = get_fanova_marginals(pyfanova)
+    most_important = get_fanova_marginals(pyfanova, max_num=num_params)
     
     
     vis = Visualizer(pyfanova)
