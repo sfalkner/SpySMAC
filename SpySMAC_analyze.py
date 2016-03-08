@@ -24,7 +24,8 @@ import traceback
 spysmac_path = os.path.dirname(os.path.realpath(__file__))
 sys.path =[ os.path.join(spysmac_path, "pysmac"),
             os.path.join(spysmac_path, "pynisher"),
-            os.path.join(spysmac_path, "fanova")] + sys.path
+            os.path.join(spysmac_path, "fanova"),
+	    os.path.join(spysmac_path, "latex_tools")] + sys.path
 
 
 import numpy as np
@@ -41,7 +42,7 @@ from SpySMAC.utils.plot_scatter import plot_scatter_plot
 from SpySMAC.utils.html_gen import generate_html
 from SpySMAC.utils.config_space import ConfigSpace
 
-
+import SpySMAC_create_tex as tex_creator
 
 #logging.basicConfig(level=logging.DEBUG)
 
@@ -113,6 +114,9 @@ USAGE
     opt_params.add_argument("-n", "--num_params", default=10,
                             help="number of most important parameters in fANOVA analysis")
 
+    opt_params.add_argument("-t", "--texstyle", default="article", help="imports a tex template. \n"
+			    "Usage: -t ijcai13, -t aaai or -t llncs \n")
+
     # Process arguments
     args = parser.parse_args(argv[1:])
 
@@ -133,6 +137,12 @@ def analyze_simulations(args):
         os.makedirs(options['outputdir'])
     else:
         logging.warn("Output directory (%s) already exists; it will be overwritten." %(options['outputdir']))
+
+    # Create Plot directory
+    if not os.path.isdir(options['outputdir'] + "Plots/"):
+        os.makedirs(options['outputdir'] + "Plots/")
+    else:
+        logging.warn("Output directory (%sPlots/) already exists; it will be overwritten." %(options['outputdir']))
     
     
     # find the number of trainings and test instances
@@ -203,14 +213,14 @@ def analyze_simulations(args):
 
     #print(json.dumps(stats, indent=2))
     
-    test_scatter_plot = get_scatter_plot(baseline_test, incumbent_test, options['outputdir'], obj.cutoff_time, True)
-    train_scatter_plot = get_scatter_plot(baseline_train, incumbent_train, options['outputdir'], obj.cutoff_time, False)
+    test_scatter_plot = get_scatter_plot(baseline_test, incumbent_test, options['outputdir'] + "/Plots", obj.cutoff_time, True)
+    train_scatter_plot = get_scatter_plot(baseline_train, incumbent_train, options['outputdir'] + "/Plots", obj.cutoff_time, False)
 
-    test_cactus_plot = get_cactus_plot(baseline_test, incumbent_test, options['outputdir'], obj.cutoff_time, True)
-    train_cactus_plot = get_cactus_plot(baseline_train, incumbent_train, options['outputdir'], obj.cutoff_time, False)
+    test_cactus_plot = get_cactus_plot(baseline_test, incumbent_test, options['outputdir'] + "/Plots", obj.cutoff_time, True)
+    train_cactus_plot = get_cactus_plot(baseline_train, incumbent_train, options['outputdir'] + "/Plots", obj.cutoff_time, False)
 
-    test_cdf_plot = get_cdf_plot(baseline_test, incumbent_test, options['outputdir'], obj.cutoff_time, True)
-    train_cdf_plot = get_cdf_plot(baseline_train, incumbent_train, options['outputdir'], obj.cutoff_time, False)
+    test_cdf_plot = get_cdf_plot(baseline_test, incumbent_test, options['outputdir'] + "/Plots", obj.cutoff_time, True)
+    train_cdf_plot = get_cdf_plot(baseline_train, incumbent_train, options['outputdir'] + "/Plots", obj.cutoff_time, False)
 
     if options["disable_fanova"]:
         p_not_imps, p_def_imps, fanova_def_plots, fanova_not_plots = [], [], [], []
@@ -221,7 +231,7 @@ def analyze_simulations(args):
         # fANOVA        
         try:
             p_not_imps, fanova_not_plots = get_fanova(obj.get_pyfanova_obj(check_scenario_files = False, improvement_over="NOTHING", heap_size = options['memlimit_fanova']), 
-                                      cs, options['outputdir'], improvement_over="NOTHING", num_params=options["num_params"])
+                                      cs, options['outputdir'] + "/Plots", improvement_over="NOTHING", num_params=options["num_params"])
         except:
             #traceback.print_exc()
             logging.warn("fANOVA (without capping) failed")
@@ -229,7 +239,7 @@ def analyze_simulations(args):
     
         try:
             p_def_imps, fanova_def_plots = get_fanova(obj.get_pyfanova_obj(check_scenario_files = False, improvement_over="DEFAULT", heap_size = options['memlimit_fanova']), 
-                                      cs, options['outputdir'], improvement_over="DEFAULT", num_params=options["num_params"])
+                                      cs, options['outputdir'] + "/Plots", improvement_over="DEFAULT", num_params=options["num_params"])
         except:
             #traceback.print_exc()
             logging.warn("fANOVA (with capping at default performance) failed")
@@ -279,6 +289,32 @@ def analyze_simulations(args):
     except:
         print("failed generating the pdf")
         traceback.print_exc(file=sys.stdout)
+
+    
+    cdf_values_baseline_training  = get_cdf_x_y(baseline_train, obj.cutoff_time);
+    cdf_values_incumbent_training = get_cdf_x_y(incumbent_train, obj.cutoff_time);
+
+    cdf_values_baseline_test  = get_cdf_x_y(baseline_test, obj.cutoff_time);
+    cdf_values_incumbent_test = get_cdf_x_y(incumbent_test, obj.cutoff_time);
+
+    tex_creator.SpySMAC_create_tex(solver_name=solver_name, 
+                  meta=meta, 
+                  incumbent=obj.data[i]['parameters'][0],
+                  test_perf=test_stats,
+                  baseline_train=baseline_train,
+                  baseline_test=baseline_test,
+                  incumbent_train=incumbent_train,
+                  incumbent_test=incumbent_test,
+                  training_perf=training_stats, 
+                  param_imp_def=p_def_imps,
+                  param_imp_not=p_not_imps, 
+                  plots=plots, 
+                  out_dir=options['outputdir'], 
+		  tex_style=options['texstyle'],
+		  cdf_values_baseline_training  = cdf_values_baseline_training,
+		  cdf_values_incumbent_training = cdf_values_incumbent_training,
+		  cdf_values_baseline_test  = cdf_values_baseline_test,
+		  cdf_values_incumbent_test = cdf_values_incumbent_test)
     
     
 def get_stats(baseline, configured, cutoff=300):
@@ -384,25 +420,14 @@ def get_cdf_plot(baseline, configured, out_dir, cutoff, test=True):
     #remove timeouts
     #baseline = filter(lambda x: True if x < cutoff else False, baseline)
     #configured = filter(lambda x: True if x < cutoff else False, configured)
-    
-    def get_x_y(data):
-        b_x, b_y, i_s = [], [], 0
-        for i, x in enumerate(np.sort(data)):
-            b_x.append(x)
-            if x < cutoff:
-                b_y.append(float(i) /len(data))
-                i_s = i
-            else: 
-                b_y.append(float(i_s) /len(data))
-        return b_x, b_y
                 
-    #print(get_x_y(baseline))
-    #print(get_x_y(configured))
+    #print(get_cdf_x_y(baseline, cutoff))
+    #print(get_cdf_x_y(configured, cutoff))
                 
-    #print(get_x_y(baseline)[1])
-    #print(get_x_y(baseline)[0])
-    ax1.step(get_x_y(baseline)[0], get_x_y(baseline)[1], label="Default")
-    ax1.step(get_x_y(configured)[0], get_x_y(configured)[1], color='r', label="Configured")
+    #print(get_cdf_x_y(baseline, cutoff)[1])
+    #print(get_cdf_x_y(baseline, cutoff)[0])
+    ax1.step(get_cdf_x_y(baseline, cutoff)[0], get_cdf_x_y(baseline, cutoff)[1], label="Default")
+    ax1.step(get_cdf_x_y(configured, cutoff)[0], get_cdf_x_y(configured, cutoff)[1], color='r', label="Configured")
 
     ax1.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
     ax1.set_xlabel("Runtime [sec]")
@@ -425,7 +450,18 @@ def get_cdf_plot(baseline, configured, out_dir, cutoff, test=True):
     if test:
         return "cdf_test.png"
     else:
-        return "cdf_train.png"     
+        return "cdf_train.png"
+
+def get_cdf_x_y(data, cutoff):
+    b_x, b_y, i_s = [], [], 0
+    for i, x in enumerate(np.sort(data)):
+        b_x.append(x)
+        if x < cutoff:
+            b_y.append(float(i) /len(data))
+            i_s = i
+        else: 
+            b_y.append(float(i_s) /len(data))
+    return b_x, b_y     
 
 def get_fanova(pyfanova, cs, out_dir, improvement_over="DEFAULT", num_params=10):
     ''' generate parameter importance via fANOVA 
