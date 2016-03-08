@@ -1,17 +1,10 @@
 #!/usr/local/bin/python2.7
 # encoding: utf-8
 
-# TODO: Contact Data
 '''
 APGMFAC -- Automated Paper-Generation Machine for Algorithm Configuration
 
-? @author:     Julian Kunzelmann ? and Marius Lindauer ? ?
-
-? @copyright:  2016 AAD Group Freiburg. All rights reserved. ?
-
-? @license:   GPLv2 ?
-
-? @contact:   kunzelmj@informatik.uni-freiburg.de ? , lindauer@cs.uni-freiburg.de ? ?
+@author:     Julian Kunzelmann
 '''
 
 import os
