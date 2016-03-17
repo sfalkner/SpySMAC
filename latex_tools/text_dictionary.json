@@ -1,0 +1,98 @@
+{
+  "title" : "Automated Configuration and Analysis of $<$SOLVER$>$ for $<$INSTANCES$>$",
+  
+  "sections" : {
+    "introduction"                              : "Introduction",
+    "algorithm_description"                     : "Algorithm Description",
+    "benchmark"                                 : "Benchmark",
+    "setup"                                     : "Setup",
+    "problem_instances"                         : "Problem Instances",
+    "configuration"                             : "Algorithm Configuration by SpySMAC",
+    "performance_overview"                      : "Performance Overview",
+    "scatter_plots"                             : "Scatter Plots",
+    "cdf_plots"                                 : "Runtime Distribution Plots",
+    "fanova"                                    : "Results of fANOVA",
+    "parameter_importance"                      : "Parameter Importance",
+    "parameter_importance_good_configurations"  : "Parameter Importance for the Configurations who outperformed the Default"
+  },
+
+  "table_entries" : {
+    "default_parameters" : "Default",
+    "configured_parameters" : "Configured",
+    "average_runtime" : "Average Runtime",
+    "algorithm_timeouts" : "Timeouts",
+    "par10_score" : "PAR10 Score",
+    "parameter" : "Parameter",
+    "parameter_importance" : "Importance",
+    "parameter_setting_default" : "Default setting",
+    "parameter_setting_configured" : "Configured setting"
+   },
+
+  "captions" : {
+    "meta_data" : "Meta data for the algorithm configuration run",
+    "parameter_configuration" : "Chosen configuration by SMAC",
+    "training_performance" : "Training performance",
+    "test_performance" : "Test performance",
+    "cumulative_distribution_training" : "Runtime Distribution Plot for the training instances",
+    "cumulative_distribution_test" : "Runtime Distribution Plot for the train instances",
+    "parameter_importance_over_nothing" : "Parameter Importance", 
+    "parameter_importance_plot_over_nothing" : "Marginalization for parameter",
+    "parameter_importance_over_default" : "Parameter Importance for the configurations, who result to a better performance than the default.",
+    "parameter_importance_plot_over_default" : "Marginalization for parameter",
+    "parameter_importance_plot_over_default_2" : "over the configurations, who result to a better performance than the default."
+  },
+
+  "quantity_result_train" : "The algorithm was slower for $<$baseline_train_less_than_incumbent_train$>$ training instances with the new algorithm configuration, equally fast for $<$baseline_train_equal_incumbent_train$>$ training instances and faster for $<$baseline_train_greater_than_incumbent_train$>$ training instances."
+  ,
+
+  "quantity_result_test" : "The algorithm was slower for $<$baseline_test_less_than_incumbent_test$>$ test instances with the new algorithm configuration, equally fast for $<$baseline_test_equal_incumbent_test$>$ test instances and faster for $<$baseline_test_greater_than_incumbent_test$>$ test instances."
+  ,
+
+  "runtime_distribution_comparison_training_cutoff" : "<Solver> was able to solve more or at least an equivalent amount of training instances with the <better> configuration from <first_time> seconds per target algorithm run to the cutoff time. "
+
+  ,
+
+   "runtime_distribution_comparison_training" : "<Solver> was able to solve more or at least an equivalent amount of training instances with the <better> configuration from <first_time> seconds per target algorithm run to <second_time> seconds per target algorithm run. "
+
+  ,
+
+   "runtime_distribution_comparison_test_cutoff" : "<Solver> was able to solve more or at least an equivalent amount of test instances with the <better> configuration from <first_time> seconds per target algorithm run to the cutoff time. "
+
+  ,
+
+   "runtime_distribution_comparison_test" : "<Solver> was able to solve more or at least an equivalent amount of test instances with the <better> configuration from <first_time> seconds per target algorithm run to <second_time> seconds per target algorithm run. "
+
+  ,
+
+  "author" : "$<$Your Name$>$"
+
+  ,
+
+  "institution" : "$<$Your Institution$>$"
+
+  ,
+
+  "introduction_text" : "This paper is based on the result of the analysis tool SpySMAC\\cite{SpySMAC}, which automatically configures an algorithm for given instances with SMAC\\cite{SMAC}."
+
+  ,
+
+  "description_of_instances" : "$<$Describe your instances$>$"
+
+  ,
+
+    "description_of_scatter_plots": "These scatter plots give you for every instance, represented by a dot, a direct comparison of the corresponding runtime for the configurations. We can see the runtime for the default configuration on the logarithmic x-axis and the optimized configuration on the logarithmic y-axis. The diagonal splits the graph in an upper triangle, in which the default configuration outperformed the optimized configuration and a lower triangle, in which the optimized configuration outperformed the default configuration."
+
+  ,
+
+  "description_of_cumulative_distribution_function" : "The runtime distribution plots visualize the percentage of solved instances within a given runtime. Therefore we can see the runtime in logarithmic form on the x-axis and the percentage of solved instances, from the underlying distribution, on the y-axis. The functions stop at the given cutoff time and the higher the probability the better."
+  
+  ,
+
+  "description_of_fanova" : "This chapter shows the result of functional Analysis Of VAriance (fANOVA) for the SMAC runs also mentioned in \\cite{fANOVA}. It estimates the performance importance of each parameter by its responsible variance of performance in percentage (see table \\ref{tab:parameter_importance}). It also gives you for each setting of a parameter a performance estimation marginalized over the possible settings of the other parameters and visualized in the following plots."
+
+  ,
+
+  "date" : "$<$Date of Publication$>$",
+  
+  "algorithm_description_placeholder" : "$<$Description for your Algorithm$>$ \n"
+}

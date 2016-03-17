@@ -331,6 +331,10 @@ def run_simulations(args):
             # spysmacs run options
             for (k,v) in list(options.items()):
                 fh.write("{} = {}\n".format(k,v))
+
+	    # pcs information
+	    for key in param_dict.keys():
+	    	fh.write("%s = %s\n" % (key, param_dict[key][1]))
         
         # make sure no time is wasted and go directly to the validation
         options['repetitions'] = 1

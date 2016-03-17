@@ -50,6 +50,8 @@ SpySMAC is an algorithm configuration tool based on SMAC for SAT solvers
   SpySMAC_run.py - script to run the configuration 
   
   SpySMAC_analyze.py - script to analyze the confiuration runs
+
+  latex_tools - directory with files to automatically generate a paper via SpySMAC_analyze.py script
  
 #USAGE
   See:
@@ -121,6 +123,21 @@ python SpySMAC_analyze.py -i spysmac_logs/ -o spysmac_report/
 ```
   
   You can see the report by opening "spysmac_report/index.html" in the web browser of your choice.
+  And you can see the generated paper in the "spysmac_report" folder together with the tex files.
+
+  To use for example the ijcai13 template you have to write in your terminal:
+
+```bash
+python SpySMAC_analyze.py -i spysmac_logs/ -o spysmac_report/ -t ijcai13
+```
+
+  And for help type
+
+```bash
+python SpySMAC_analyze.py -h
+```
+
+  
   
   Please note that the configuration run was very short and SMAC could not collect a lot of data.
   Therefore, we don't expect a large improvement on this mini example 
