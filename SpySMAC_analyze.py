@@ -270,7 +270,9 @@ def analyze_simulations(args):
                   param_imp_not=p_not_imps, 
                   plots=plots, 
                   out_dir=options['outputdir'])
-                 
+    
+    # First pdf generator
+    """             
     try:
         import SpySMAC.utils.pdf_generator
     
@@ -289,14 +291,17 @@ def analyze_simulations(args):
     except:
         print("failed generating the pdf")
         traceback.print_exc(file=sys.stdout)
+    """
 
-    
+    # Prepares the runtime data for the cumulative distribution function plots
     cdf_values_baseline_training  = get_cdf_x_y(baseline_train, obj.cutoff_time);
     cdf_values_incumbent_training = get_cdf_x_y(incumbent_train, obj.cutoff_time);
 
     cdf_values_baseline_test  = get_cdf_x_y(baseline_test, obj.cutoff_time);
     cdf_values_incumbent_test = get_cdf_x_y(incumbent_test, obj.cutoff_time);
 
+
+    # Second pdf generator and tex file generator 
     tex_creator.SpySMAC_create_tex(solver_name=solver_name, 
                   meta=meta, 
                   incumbent=obj.data[i]['parameters'][0],

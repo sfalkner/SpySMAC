@@ -50,6 +50,8 @@ SpySMAC is an algorithm configuration tool based on SMAC for SAT solvers
   SpySMAC_run.py - script to run the configuration 
   
   SpySMAC_analyze.py - script to analyze the confiuration runs
+
+  latex_tools - directory with files to automatically generate a paper via the analyze script above
  
 #USAGE
   See:

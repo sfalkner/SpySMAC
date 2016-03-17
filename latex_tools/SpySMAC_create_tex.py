@@ -15,6 +15,93 @@ def SpySMAC_create_tex(solver_name, meta, incumbent, test_perf, training_perf,
                    baseline_train,baseline_test, incumbent_train, incumbent_test,
 		   cdf_values_baseline_training, cdf_values_incumbent_training,
 		   cdf_values_baseline_test, cdf_values_incumbent_test):
+    """
+	Generates automatically a paper out of the analysed data of SpySMAC.
+
+	Args:
+		solver_name (str):	The name of the used solver.
+
+		meta (list):	A list of tuples containing the title and the specific
+				value for the meta information. Both as str.
+
+		incumbent (dict):	This dictionary represents each parameter of the
+					solver and the corresponding optimized configuration.
+					Both as str.
+
+		test_perf (dict):	In this dictionary are the PAR10 scores, average runtimes,
+					and timeout for the test instances. Inside this dictionary 
+					are two further dictionaries. One for the base configuration
+					and one for the optimized configuration. And furthermore 
+					the key-value pair for the amount of test instances. 	
+
+		training_perf (dict):	In this dictionary are the PAR10 scores, average runtimes,
+					and timeout for the training instances. Inside this dictionary 
+					are two further dictionaries. One for the base configuration
+					and one for the optimized configuration. And furthermore 
+					the key-value pair for the amount of training instances.
+
+		param_imp_def (list):   Contains the importance of each parameter estimated by fANOVA. 
+					Therefore fANOVA only considered parameter settings, which were
+					able to outperform the default configuration. Each list entry is
+					a tuple with the importance of the parameter and parameter name.
+
+		param_imp_not (list):	Contains the importance of each parameter estimated by fANOVA.
+					Each list entry is a tuple with the importance of the parameter
+					and parameter name.
+
+		plots (dict):		The name of the plots. The keys are the types of the plots and
+					the values are dictionaries for the corresponding training and
+					test plots.
+
+		out_dir (str):		The path to the output directory
+
+		tex_style (str):	Name of the template to use. Possible templates are ijcai13,
+					aaai or llncs. Else the article class will be used.
+
+		baseline_train (numpy.ndarray):	Runtime list for the training instances achieved with
+						the default configuration.
+
+		baseline_test (numpy.ndarray):	Runtime list for the test instances achieved with
+						the default configuration.
+
+		incumbent_train	(numpy.ndarray):	Runtime list for the training instances 
+							achieved with the optimized configuration.
+
+		incumbent_test (numpy.ndarray):	Runtime list for the test instances achieved with
+						the optimized configuration.
+
+		cdf_values_baseline_training (tuple):	Runtime list and percentage of solved instances
+							list. Within the runtime of entry i of the
+							runtime list the solver was able to solve the
+							percentage of entry i of the percentage of
+							solved instances list. Here for the default
+							configuration and the training instances.
+
+		cdf_values_incumbent_training (tuple):	Runtime list and percentage of solved instances
+							list. Within the runtime of entry i of the
+							runtime list the solver was able to solve the
+							percentage of entry i of the percentage of
+							solved instances list. Here for the optimized
+							configuration and the training instances.
+
+		cdf_values_baseline_test (tuple):	Runtime list and percentage of solved instances
+							list. Within the runtime of entry i of the
+							runtime list the solver was able to solve the
+							percentage of entry i of the percentage of
+							solved instances list. Here for the default
+							configuration and the test instances.
+
+		cdf_values_incumbent_test (tuple):	Runtime list and percentage of solved instances
+							list. Within the runtime of entry i of the
+							runtime list the solver was able to solve the
+							percentage of entry i of the percentage of
+							solved instances list. Here for the optimized
+							configuration and the test instances.
+
+	Returns:
+		Nothing
+
+    """
 
     # Load the text dictionary out of the json file
     with open("latex_tools/text_dictionary.json") as json_file:
@@ -47,7 +134,7 @@ def SpySMAC_create_tex(solver_name, meta, incumbent, test_perf, training_perf,
 	
         # Meta data processing
         texfile.write("\\subsection{%s} \n" % (json_data["sections"]["setup"]))
-        texfile.write("\\begin{table}[thb] \n")
+        texfile.write("\\begin{table}[thbH!] \n")
         texfile.write("\\centering \n")
         texfile.write("\\caption{%s} \n" % (json_data["captions"]["meta_data"]))
         texfile.write("\\begin{tabular}{ p{0.45\\columnwidth} | p{0.45\\columnwidth} }  \n")
@@ -101,7 +188,7 @@ def SpySMAC_create_tex(solver_name, meta, incumbent, test_perf, training_perf,
         # Algorithm Peformance
         texfile.write("\\subsection{%s} \n" % (json_data["sections"]["performance_overview"]))
 
-        texfile.write("\\begin{table}[thb] \n")
+        texfile.write("\\begin{table}[thbH!] \n")
         texfile.write("\\centering \n")
         texfile.write("\\caption{%s} \n" % (json_data["captions"]["parameter_configuration"]))
         texfile.write("\\begin{tabular}{ p{0.3\\columnwidth} | p{0.3\\columnwidth} | p{0.3\\columnwidth} } \n")
@@ -114,12 +201,12 @@ def SpySMAC_create_tex(solver_name, meta, incumbent, test_perf, training_perf,
 		if meta_key == key:
 			metavalue = meta_value
 
-          # TODO: Read the performance data
+          # Read the parameter settings
           texfile.write("\\hline \n")
 	  if (metavalue != value):
-          	texfile.write("\\textbf{%s} & $\\textbf{%s}$ & $\\textbf{%s}$\\\\ \n" % (key, metavalue, value))
+          	texfile.write("\\textbf{%s} & $\\textbf{%.15s}$ & $\\textbf{%.15s}$\\\\ \n" % (key, metavalue, value))
 	  else:
-		texfile.write("%s & $%s$ & $%s$\\\\ \n" % (key, metavalue, value))
+		texfile.write("%s & $%.15s$ & $%.15s$\\\\ \n" % (key, metavalue, value))
 
         
         texfile.write("\\end{tabular} \n")
@@ -181,7 +268,7 @@ def SpySMAC_create_tex(solver_name, meta, incumbent, test_perf, training_perf,
 									 str(baseline_test_greater_than_incumbent_test))))
 
         # Training Performance (Table)
-        texfile.write("\\begin{table}[thb] \n")
+        texfile.write("\\begin{table}[thbH!] \n")
         texfile.write("\\centering \n")
         texfile.write("\\caption{%s} \n" % (json_data["captions"]["training_performance"]))
         texfile.write("\\begin{tabular}{ p{0.3\\columnwidth} | p{0.3\\columnwidth} | p{0.3\\columnwidth} } \n")
@@ -189,7 +276,7 @@ def SpySMAC_create_tex(solver_name, meta, incumbent, test_perf, training_perf,
                                               json_data["table_entries"]["configured_parameters"]))
         texfile.write("\\hline \n")
 
-        # TODO: Read the performance data
+        # Read the performance data
         texfile.write("%s & $%.2f$ & $%.2f$ \\\\ \n" % (json_data["table_entries"]["average_runtime"],
                                                         training_perf['base']['par1'],
                                                         training_perf['conf']['par1']))
@@ -207,7 +294,7 @@ def SpySMAC_create_tex(solver_name, meta, incumbent, test_perf, training_perf,
         texfile.write("\\end{table} \n")
 
         # Test Performance (Table)
-        texfile.write("\\begin{table}[thb] \n")
+        texfile.write("\\begin{table}[thbH!] \n")
         texfile.write("\\centering \n")
         texfile.write("\\caption{%s} \n" % (json_data["captions"]["test_performance"]))
         texfile.write("\\begin{tabular}{ c | c | c } \n")
@@ -215,7 +302,7 @@ def SpySMAC_create_tex(solver_name, meta, incumbent, test_perf, training_perf,
                                               json_data["table_entries"]["configured_parameters"]))
         texfile.write("\\hline \n")
 
-        # TODO: Read the performance data
+        # Read the performance data
         texfile.write("%s & $%.2f$ & $%.2f$ \\\\ \n" % (json_data["table_entries"]["average_runtime"],
                                                         test_perf['base']['par1'],
                                                         test_perf['conf']['par1']))
@@ -237,16 +324,16 @@ def SpySMAC_create_tex(solver_name, meta, incumbent, test_perf, training_perf,
         texfile.write("\\subsection{%s} \n" % (json_data["sections"]["scatter_plots"]))
         texfile.write("%s \n" % (json_data["description_of_scatter_plots"]))
 
-        # TODO: Scatter Plot for the training instances
-        texfile.write("\\begin{figure}[ht] \n")
+        # Scatter Plot for the training instances
+        texfile.write("\\begin{figure}[thbH!] \n")
         texfile.write("\\centering \n")
         texfile.write("\\includegraphics[width=0.8\\columnwidth] " +
                      "{Plots/scatter_train.png} \n")
         texfile.write("\\caption{Scatter Plot for the training instances} \n")
         texfile.write("\\end{figure} \n")
 
-        # TODO: Scatter Plot for the test instances
-        texfile.write("\\begin{figure}[ht] \n")
+        # Scatter Plot for the test instances
+        texfile.write("\\begin{figure}[thbH!] \n")
         texfile.write("\\centering \n")
         texfile.write("\\includegraphics[width=0.8\\columnwidth] " +
                      "{Plots/scatter_test.png} \n")
@@ -257,10 +344,10 @@ def SpySMAC_create_tex(solver_name, meta, incumbent, test_perf, training_perf,
 
         # Cumulative Distribution Function Plots
         texfile.write("\\subsection{%s} \n" % (json_data["sections"]["cdf_plots"]))
-        # TODO: Cumulative Distribution Function
 	texfile.write("%s \\\\ \n" % (json_data["description_of_cumulative_distribution_function"]))
-        #       Plot for the training instances
-        texfile.write("\\begin{figure}[ht] \n")
+
+        # Plot for the training instances
+        texfile.write("\\begin{figure}[thbH!] \n")
         texfile.write("\\centering \n")
         texfile.write("\\includegraphics[width=0.8\\columnwidth]{Plots/cdf_train.png} \n")
         texfile.write("\\caption{%s} \n" % (json_data["captions"]["cumulative_distribution_training"]))
@@ -326,8 +413,8 @@ def SpySMAC_create_tex(solver_name, meta, incumbent, test_perf, training_perf,
 			if (float(min(cdf_values_baseline_test[0][i], cdf_values_incumbent_test[0][j])) == float(meta[10][1])):
 				break
 
-        # TODO: Cumulative Distribution Function Plot for the test instances
-        texfile.write("\\begin{figure}[ht] \n")
+        # Cumulative Distribution Function Plot for the test instances
+        texfile.write("\\begin{figure}[thbH!] \n")
         texfile.write("\\centering \n")
         texfile.write("\\includegraphics[width=0.8\\columnwidth]{Plots/cdf_test.png} \n")
         texfile.write("\\caption{%s} \n" % (json_data["captions"]["cumulative_distribution_test"]))
@@ -338,15 +425,9 @@ def SpySMAC_create_tex(solver_name, meta, incumbent, test_perf, training_perf,
 		if (i == len(betterOneListTraining) - 1):
 			texfile.write("%s" % (json_data["runtime_distribution_comparison_training_cutoff"].replace("<Solver>", solver_name).replace("<better>", betterOneListTraining[i][0]).replace("<first_time>", str(betterOneListTraining[i][2])))) 
 
-
-#if i != 1 else str(betterOneListTraining[0][2]))))
-
-		#	texfile.write("%s was able to solve with the %s configuration more or at least an equivalent amount of %s instances from %s seconds per target algorithm run until the cutoff. " % (solver_name, betterOneListTraining[i][0], "training", betterOneListTraining[i][2]))
 		else:
 			texfile.write("%s" % (json_data["runtime_distribution_comparison_training"].replace("<Solver>", solver_name).replace("<better>", betterOneListTraining[i][0]).replace("<first_time>", str(betterOneListTraining[i][2])).replace("<second_time>", str(betterOneListTraining[i + 1][2]))))
 
-
-#	texfile.write("%s was able to solve with the %s configuration more or at least an equivalent amount of %s instances from %s seconds per target algorithm run to %s seconds per target algorithm run. " % (solver_name, betterOneListTraining[i][0], "training", betterOneListTraining[i][2], betterOneListTraining[i + 1][2]))
 	texfile.write("\\\\ \n")
 
 
@@ -354,12 +435,8 @@ def SpySMAC_create_tex(solver_name, meta, incumbent, test_perf, training_perf,
 		if (i == len(betterOneListTest) - 1):
 			texfile.write("%s" % (json_data["runtime_distribution_comparison_test_cutoff"].replace("<Solver>", solver_name).replace("<better>", betterOneListTest[i][0]).replace("<first_time>", str(betterOneListTest[i][2]))))
 
-
-			#texfile.write("%s was able to solve with the %s configuration more or at least an equivalent amount of %s instances from %s seconds per target algorithm run until the cutoff. " % (solver_name, betterOneListTest[i][0], "test", betterOneListTest[i][2]))
 		else:
 			texfile.write("%s" % (json_data["runtime_distribution_comparison_test"].replace("<Solver>", solver_name).replace("<better>", betterOneListTest[i][0]).replace("<first_time>", str(betterOneListTest[i][2])).replace("<second_time>", str(betterOneListTest[i + 1][2]))))			
-
-			#texfile.write("%s was able to solve with the %s configuration more or at least an equivalent amount of %s instances from %s seconds per target algorithm run to %s seconds per target algorithm run. " % (solver_name, betterOneListTest[i][0], "test", betterOneListTest[i][2], betterOneListTest[i + 1][2]))
         
 	texfile.write("\n")
 	texfile.write("\\FloatBarrier \n")
@@ -375,7 +452,7 @@ def SpySMAC_create_tex(solver_name, meta, incumbent, test_perf, training_perf,
 		texfile.write("%s \n" % (json_data["description_of_fanova"]))
 
 		# Parameter Performance marginalized over all settings
-		texfile.write("\\begin{table}[thb] \n")
+		texfile.write("\\begin{table}[thbH!] \n")
 		texfile.write("\\centering \n")
 		texfile.write("\\caption{%s} \n" % (json_data["captions"]["parameter_importance_over_nothing"]))
 		texfile.write("\\begin{tabular}{ c | c } \n")
@@ -405,7 +482,7 @@ def SpySMAC_create_tex(solver_name, meta, incumbent, test_perf, training_perf,
 
 
 		for j in range(len(param_imp_not)):
-		        texfile.write("\\begin{figure}[ht] \n")
+		        texfile.write("\\begin{figure}[thbH!] \n")
 		        texfile.write("\\centering \n")
 		        texfile.write("\\includegraphics[width=0.8\\columnwidth]" +
 		                     "{Plots/%s_fanova_over_NOTHING.png} " % (param_imp_not[j][1]) +
@@ -420,7 +497,7 @@ def SpySMAC_create_tex(solver_name, meta, incumbent, test_perf, training_perf,
 		texfile.write("\\subsection{%s} \n" % (json_data["sections"]["parameter_importance_good_configurations"]))
 
 		# Parameter Performance marginalized over the good performing settings
-		texfile.write("\\begin{table}[thb] \n")
+		texfile.write("\\begin{table}[thbH!] \n")
 		texfile.write("\\centering \n")
 		texfile.write("\\caption{%s} \n" % (json_data["captions"]["parameter_importance_over_default"]))
 		texfile.write("\\begin{tabular}{ p{0.45\\columnwidth} | p{0.45\\columnwidth} } \n")
@@ -449,7 +526,7 @@ def SpySMAC_create_tex(solver_name, meta, incumbent, test_perf, training_perf,
 		  texfile.write(" explain at least $1\%$ of the performance variance, for the configurations who are better than the default. \n")
 
 		for j in range(len(param_imp_not)):
-		        texfile.write("\\begin{figure}[ht] \n")
+		        texfile.write("\\begin{figure}[thbH!] \n")
 		        texfile.write("\\centering \n")
 		        texfile.write("\\includegraphics[width=0.8\\columnwidth]" +
 		                     "{Plots/%s_fanova_over_DEFAULT.png} \n" % (
@@ -489,6 +566,22 @@ def SpySMAC_create_tex(solver_name, meta, incumbent, test_perf, training_perf,
 
 
 def tex_template_processing(texfile, tex_style, json_data, solver_name):
+	"""
+	Args:
+		texfile (file):	The texfile to create the paper.
+
+		tex_style (str):	Name of the template to use. Possible templates are ijcai13,
+					aaai or llncs. Else the article class will be used.
+
+		json_data (dict):	Text phrases for the paper callable via the corresponding keys.
+
+		solver_name (str):	The name of the used solver.
+
+	Returns:
+		Nothing
+
+
+	"""
 
         # Tex file pre processing
         if tex_style == "llncs":
@@ -514,7 +607,7 @@ def tex_template_processing(texfile, tex_style, json_data, solver_name):
                 texfile.write("\\usepackage{courier} \n")
                 texfile.write("\\frenchspacing \n")
                 texfile.write("\\setlength{\\pdfpagewidth}{8.5in} \n")
-                texfile.write("\\setlength{\\pdfpageheight}{11in} \n")
+                texfile.write("\\setlength{\\pdfpageheigthbH!}{11in} \n")
                 texfile.write("\\pdfinfo{ \n")
                 texfile.write("/Title (%s) \n" % (json_data["title"].replace("$<$SOLVER$>$", solver_name)))
                 texfile.write("/Author (Put All Your Authors Here, \

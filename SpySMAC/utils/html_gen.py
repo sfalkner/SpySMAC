@@ -62,6 +62,7 @@ $(document).ready(function(){
 </body>
 </html>
 '''
+    plot_path = "./Plots/"
 
     with open(os.path.join(out_dir, "index.html"), "w") as fp:
         fp.write(header)
@@ -101,44 +102,50 @@ $(document).ready(function(){
         #Scatter Plot
         fp.write("<dt>Scatter Plot <a href=\"#\" id=\"button\" class=\"closed\">Details</a></dt>\n")
         fp.write("<dd>\n <div align=\"center\">")
-        fp.write("<a href=\"%s\" data-lightbox=\"%s\" data-title=\"%s\"><img src=\"%s\" alt=\"Scatter Test Plot\" width=\"300px\"></a>\n" %(plots["scatter"]["test"],
-                                                                                                                       plots["scatter"]["test"],
-                                                                                                                       plots["scatter"]["test"],
-                                                                                                                       plots["scatter"]["test"]))
-        fp.write("<a href=\"%s\" data-lightbox=\"%s\" data-title=\"%s\"><img src=\"%s\" alt=\"Scatter Train Plot\" width=\"300px\"></a>\n" %(plots["scatter"]["train"],
-                                                                                                                       plots["scatter"]["train"],
-                                                                                                                       plots["scatter"]["train"],
-                                                                                                                       plots["scatter"]["train"]))
+        fp.write("<a href=\"%s\" data-lightbox=\"%s\" data-title=\"%s\"><img src=\"%s\" alt=\"Scatter Test Plot\" width=\"300px\"></a>\n" %
+													   (plot_path + plots["scatter"]["test"],
+                                                                                                            plot_path + plots["scatter"]["test"],
+                                                                                                            plot_path + plots["scatter"]["test"],
+                                                                                                            plot_path + plots["scatter"]["test"]))
+        fp.write("<a href=\"%s\" data-lightbox=\"%s\" data-title=\"%s\"><img src=\"%s\" alt=\"Scatter Train Plot\" width=\"300px\"></a>\n" % 
+													(plot_path + plots["scatter"]["train"],
+                                                                                                         plot_path + plots["scatter"]["train"],
+                                                                                                         plot_path + plots["scatter"]["train"],
+                                                                                                         plot_path + plots["scatter"]["train"]))
         fp.write("</div></dd>\n")
         
         # CDF Plot
         fp.write("<dt>CDF Plot <a href=\"#\" id=\"button\" class=\"closed\">Details</a></dt>\n")
         fp.write("<dd>\n <div align=\"center\">")
-        fp.write("<a href=\"%s\" data-lightbox=\"%s\" data-title=\"%s\"><img src=\"%s\" alt=\"Cactus Plot\" width=\"300px\"></a>\n"  %(plots["cdf"]["test"],
-                                                                                                                       plots["cdf"]["test"],
-                                                                                                                       plots["cdf"]["test"],
-                                                                                                                       plots["cdf"]["test"] ))
-        fp.write("<a href=\"%s\" data-lightbox=\"%s\" data-title=\"%s\"><img src=\"%s\" alt=\"Cactus Plot\" width=\"300px\"></a>\n"  %(plots["cdf"]["train"],
-                                                                                                                       plots["cdf"]["train"],
-                                                                                                                       plots["cdf"]["train"],
-                                                                                                                       plots["cdf"]["train"] ))
+        fp.write("<a href=\"%s\" data-lightbox=\"%s\" data-title=\"%s\"><img src=\"%s\" alt=\"Cactus Plot\" width=\"300px\"></a>\n"  % 
+													(plot_path + plots["cdf"]["test"],
+                                                                                                         plot_path + plots["cdf"]["test"],
+                                                                                                         plot_path + plots["cdf"]["test"],
+                                                                                                         plot_path + plots["cdf"]["test"] ))
+        fp.write("<a href=\"%s\" data-lightbox=\"%s\" data-title=\"%s\"><img src=\"%s\" alt=\"Cactus Plot\" width=\"300px\"></a>\n"  % 
+													(plot_path + plots["cdf"]["train"],
+                                                                                                         plot_path + plots["cdf"]["train"],
+                                                                                                         plot_path + plots["cdf"]["train"],
+                                                                                                         plot_path + plots["cdf"]["train"] ))
         
         fp.write("</div></dd>\n")
         
         # Cactus Plot
         fp.write("<dt>Cactus Plot <a href=\"#\" id=\"button\" class=\"closed\">Details</a></dt>\n")
         fp.write("<dd>\n <div align=\"center\">")
-        fp.write("<a href=\"%s\" data-lightbox=\"%s\" data-title=\"%s\"><img src=\"%s\" alt=\"Cactus Plot\" width=\"300px\"></a>\n"  %(plots["cactus"]["test"],
-                                                                                                                       plots["cactus"]["test"],
-                                                                                                                       plots["cactus"]["test"],
-                                                                                                                       plots["cactus"]["test"] ))
-        fp.write("<a href=\"%s\" data-lightbox=\"%s\" data-title=\"%s\"><img src=\"%s\" alt=\"Cactus Plot\" width=\"300px\"></a>\n"  %(plots["cactus"]["train"],
-                                                                                                                       plots["cactus"]["train"],
-                                                                                                                       plots["cactus"]["train"],
-                                                                                                                       plots["cactus"]["train"] ))
+        fp.write("<a href=\"%s\" data-lightbox=\"%s\" data-title=\"%s\"><img src=\"%s\" alt=\"Cactus Plot\" width=\"300px\"></a>\n"  % 
+													(plot_path + plots["cactus"]["test"],
+                                                                                                         plot_path + plots["cactus"]["test"],
+                                                                                                         plot_path + plots["cactus"]["test"],
+                                                                                                         plot_path + plots["cactus"]["test"] ))
+        fp.write("<a href=\"%s\" data-lightbox=\"%s\" data-title=\"%s\"><img src=\"%s\" alt=\"Cactus Plot\" width=\"300px\"></a>\n"  % 
+													(plot_path + plots["cactus"]["train"],
+                                                                                                         plot_path + plots["cactus"]["train"],
+                                                                                                         plot_path + plots["cactus"]["train"],
+                                                                                                         plot_path + plots["cactus"]["train"] ))
         
-        __write_fanova(fp, param_imp_def, plots["fanova"]["DEFAULT"], "Default")
-        __write_fanova(fp, param_imp_not, plots["fanova"]["NOTHING"], "Nothing")
+        __write_fanova(fp, param_imp_def, plots["fanova"]["DEFAULT"], "Default", plot_path)
+        __write_fanova(fp, param_imp_not, plots["fanova"]["NOTHING"], "Nothing", plot_path)
 
         fp.write("</dl></div>\n")
         fp.write(footer)
@@ -167,7 +174,7 @@ def __write_html_stats_table(fp, perf):
     fp.write("</table>\n")
     fp.write("</div>\n")
     
-def __write_fanova(fp, parameter_importance, plots, impr_over):
+def __write_fanova(fp, parameter_importance, plots, impr_over, plot_path):
     
     # Parameter Importance Plot
     fp.write("<dt>Parameter Importance (capped at %s) <a href=\"#\" id=\"button\" class=\"closed\">Details</a></dt>\n" %(impr_over))
@@ -191,7 +198,11 @@ def __write_fanova(fp, parameter_importance, plots, impr_over):
     else:
         fp.write("<div align=\"center\">\n")
         for fplot in plots:
-            fp.write("<a href=\"%s\" data-lightbox=\"%s\" data-title=\"%s\"><img src=\"%s\" alt=\"Fanova Plot\" width=\"300px\"></a>\n"  %(fplot,fplot,fplot,fplot))
+            fp.write("<a href=\"%s\" data-lightbox=\"%s\" data-title=\"%s\"><img src=\"%s\" alt=\"Fanova Plot\" width=\"300px\"></a>\n"  % 
+														(plot_path + fplot, 
+														 plot_path + fplot, 
+														 plot_path + fplot, 
+												 		 plot_path + fplot))
         fp.write("</div>")
     fp.write("</dd>\n")
         
